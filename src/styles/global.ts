@@ -12,7 +12,7 @@ export const GlobalStyle = createGlobalStyle`
     --text-title: #363F5F;
     --text-body: #969CB3;
 
-    --shape: #FFFFFF
+    --shape: #FFFFFF;
   }
 
   * {
@@ -52,5 +52,9 @@ export const GlobalStyle = createGlobalStyle`
   [disabled] {
     opacity: 0.6;
     cursor: not-allowed;
+  }
+
+  .test {
+    flex-wrap: wrap;
   }
 `
