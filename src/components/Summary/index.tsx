@@ -1,10 +1,34 @@
+import { useContext, useEffect, useState } from "react";
 import income from "../../assets/income.svg"
 import outcome from "../../assets/outcome.svg"
 import total from "../../assets/total.svg"
+import { Transaction, TransactionsContext } from "../../contexts/TransactionsContext";
+import { currencyParser } from "../../helpers/currencyParser";
 
 import { Container } from "./styles";
 
 export function Summary() {
+  const transactions: Transaction[] = useContext(TransactionsContext);
+
+  const [totalIncome, setTotalIncome] = useState(0);
+  const [totalOutcome, setTotalOutcome] = useState(0);
+
+  useEffect(() => {
+    let income = 0;
+    let outcome = 0;
+
+    transactions.forEach(transaction => {
+      if (transaction.type === "deposit") {
+        income += transaction.amount;
+      } else {
+        outcome += transaction.amount;
+      }
+    });
+
+    setTotalIncome(income);
+    setTotalOutcome(outcome);
+  }, [transactions]);
+
   return(
     <Container>
       <div>
@@ -12,21 +36,21 @@ export function Summary() {
           <p>Entradas</p>
           <img src={income} alt="Entradas" />
         </header>
-        <strong>R$1000,00</strong>
+        <strong>{currencyParser(totalIncome)}</strong>
       </div>
       <div>
         <header>
           <p>Saídas</p>
           <img src={outcome} alt="Saídas" />
         </header>
-        <strong>- R$1000,00</strong>
+        <strong>- {currencyParser(totalOutcome)}</strong>
       </div>
       <div className="total-summary">
         <header>
           <p>Total</p>
           <img src={total} alt="Total" />
         </header>
-        <strong>R$1000,00</strong>
+        <strong>{currencyParser(totalIncome - totalOutcome)}</strong>
       </div>
     </Container>
   )
