@@ -41,6 +41,8 @@ createServer({
     this.post('transactions', (schema, request) => {
       const data = JSON.parse(request.requestBody);
 
+      Object.assign(data, { createdAt: new Date() });
+
       return schema.create('transaction', data);
     })
   }
